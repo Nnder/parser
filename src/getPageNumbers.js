@@ -1,9 +1,10 @@
 const puppeteer = require('puppeteer');
 
-const links = [];
+// https://opoznai.bg/all/sort:popular_ever/page:4
 
 
-async function getLinks(url) {
+
+async function getPageNumbers(url) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
@@ -17,6 +18,8 @@ async function getLinks(url) {
     return pageNumbers
 }
 
-module.exports = {
+getPageNumbers(`https://opoznai.bg/all/sort:popular_ever`)
 
+module.exports = {
+    getPageNumbers
 };
