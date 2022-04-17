@@ -10,24 +10,24 @@ const puppeteer = require('puppeteer');
 const urls = [
     'https://opoznai.bg/view/orlovo-oko-iagodina',
     'https://opoznai.bg/view/etnografski-kompleks-damastzena',
-    // 'https://opoznai.bg/view/chudnite-mostove',
-    // 'https://opoznai.bg/view/ekopateka-iskar-panega',
-    // 'https://opoznai.bg/view/ekopateka-diavolskata-pateka',
-    // 'https://opoznai.bg/view/krushunski-vodopadi',
-    // 'https://opoznai.bg/view/peshterata-diavolskoto-garlo',
-    // 'https://opoznai.bg/view/vodopad-skoka-kaleitza',
-    // 'https://opoznai.bg/view/vilno-selishte-azareia',
-    // 'https://opoznai.bg/view/vodopad-orfei-i-kaniona-na-vodopadite-smolian',
-    // 'https://opoznai.bg/view/ekopateka-pateka-na-zdraveto-bankia',
-    // 'https://opoznai.bg/view/iazovir-vacha',
-    // 'https://opoznai.bg/view/vodopad-zlaten-vodopad',
-    // 'https://opoznai.bg/view/natzionalen-park-pirin',
-    // 'https://opoznai.bg/view/banderishki-ezera-muratovo-ezero',
-    // 'https://opoznai.bg/view/zookat-alis',
-    // 'https://opoznai.bg/view/sedemte-rilski-ezera',
-    // 'https://opoznai.bg/view/kleptuza',
-    // 'https://opoznai.bg/view/trigradsko-jdrelo',
-    // 'https://opoznai.bg/view/vodopad-liastovichi-vir-ili-vodopad-na-liastovitzite',
+    'https://opoznai.bg/view/chudnite-mostove',
+    'https://opoznai.bg/view/ekopateka-iskar-panega',
+    'https://opoznai.bg/view/ekopateka-diavolskata-pateka',
+    'https://opoznai.bg/view/krushunski-vodopadi',
+    'https://opoznai.bg/view/peshterata-diavolskoto-garlo',
+    'https://opoznai.bg/view/vodopad-skoka-kaleitza',
+    'https://opoznai.bg/view/vilno-selishte-azareia',
+    'https://opoznai.bg/view/vodopad-orfei-i-kaniona-na-vodopadite-smolian',
+    'https://opoznai.bg/view/ekopateka-pateka-na-zdraveto-bankia',
+    'https://opoznai.bg/view/iazovir-vacha',
+    'https://opoznai.bg/view/vodopad-zlaten-vodopad',
+    'https://opoznai.bg/view/natzionalen-park-pirin',
+    'https://opoznai.bg/view/banderishki-ezera-muratovo-ezero',
+    'https://opoznai.bg/view/zookat-alis',
+    'https://opoznai.bg/view/sedemte-rilski-ezera',
+    'https://opoznai.bg/view/kleptuza',
+    'https://opoznai.bg/view/trigradsko-jdrelo',
+    'https://opoznai.bg/view/vodopad-liastovichi-vir-ili-vodopad-na-liastovitzite',
     // 'https://opoznai.bg/view/delfinarium-varna',
     // 'https://opoznai.bg/view/peshterata-snejanka',
     // 'https://opoznai.bg/view/zamakat-v-ravadinovo',
@@ -68,8 +68,8 @@ async function getPageData(urls) {
         await page.bringToFront();
         await page.waitForTimeout(5000);
         
-        await page.waitForSelector('#load_more_comments')
-        await page.click('#load_more_comments');
+        // await page.waitForSelector('#load_more_comments')
+        // await page.click('#load_more_comments');
         // нажатие на кнопку дополнения комментариев
 
         // await page.evaluate(async ()=> {
@@ -104,22 +104,25 @@ async function getPageData(urls) {
             'visited': await page.evaluate(()=> [...document.querySelectorAll('div.users_column:nth-child(1) > a')].filter((el)=>el.innerText)[0].innerText ),
             'willVisit': await page.evaluate(()=> [...document.querySelectorAll('div.users_column:nth-child(2) > a')].filter((el)=>el.innerText)[0].innerText ),
             'favorite': await page.evaluate(()=> [...document.querySelectorAll('div.users_column:nth-child(3) > a')].filter((el)=>el.innerText)[0].innerText ),
-            'numberOfComments': await page.evaluate(()=> parseFloat(document.querySelector('.infobox_heading > h3:nth-child(1)').innerText) ),
+            'numberOfComments': await page.evaluate(()=> document.querySelector('.infobox_heading > h3:nth-child(1)').innerText),
             'comments': await page.evaluate(async ()=>{
-
-                const comments_list = []
-                let btn_load = document.querySelector('#load_more_comments');
-                let comments = document.querySelector('div.comments_list:nth-child(2) > div:nth-child(1)').querySelectorAll('.comment');
-                
-                comments.forEach(comment=>{
-                    comments_list.push({
-                        "name": comment.querySelector('.wreview_username').innerText,
-                        "timestamp": comment.querySelector('.review_timestamp').innerText,
-                        "text": comment.querySelector('.comment_text_wrap > p').innerText,
+                try {
+                    const comments_list = []
+                    let btn_load = document.querySelector('#load_more_comments');
+                    let comments = document.querySelector('div.comments_list:nth-child(2) > div:nth-child(1)').querySelectorAll('.comment');
+                    
+                    comments.forEach(comment=>{
+                        comments_list.push({
+                            "name": comment.querySelector('.wreview_username').innerText,
+                            "timestamp": comment.querySelector('.review_timestamp').innerText,
+                            "text": comment.querySelector('.comment_text_wrap > p').innerText,
+                        })
                     })
-                })
 
-                return comments_list
+                    return comments_list
+                } catch (error) {
+                    return []
+                }
             }),
             'coordinate': await page.evaluate(()=> document.querySelector('.info_list > li:nth-child(2)').innerText)
         })
