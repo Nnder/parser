@@ -1,0 +1,22 @@
+{
+  "name": "parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "parser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nnder/parser.git"
+  },
+  "author": "Nnder",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nnder/parser/issues"
+  },
+  "homepage": "https://github.com/Nnder/parser#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
