@@ -22,12 +22,12 @@ async function getPageData(url) {
     
     await browser.close();
 
-    console.log(result);
+    //console.log(result);
 
     return result
 }
 
-//getPageData('https://opoznai.bg/view/chudnite-mostove');
+
 
 module.exports = {
     getPageData
