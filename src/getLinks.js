@@ -11,8 +11,6 @@ async function getLinks(url) {
     const links = await page.$$eval('.article_image', els=>els.map(el=>el.href))
     await browser.close();
 
-    console.log(links);
-
     return links
 }
 
